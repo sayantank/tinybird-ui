@@ -36,7 +36,7 @@ export default function OverviewLayout({
           </Breadcrumb>
         </div>
       </header>
-      <div className="px-6 mx-auto">{children}</div>
+      <div className="px-6 mx-auto min-w-4xl">{children}</div>
     </>
   );
 }
