@@ -48,7 +48,6 @@ export interface Datasource {
 export async function getDatasources(): Promise<Datasource[]> {
   const credentials = await getAuthCookie();
   if (!credentials) {
-    console.error("No credentials found");
     redirect("/");
   }
 
