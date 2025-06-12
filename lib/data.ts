@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { getAuthCookie } from "./auth";
 
 interface EngineConfig {
@@ -47,24 +48,30 @@ export interface Datasource {
 export async function getDatasources(): Promise<Datasource[]> {
   const credentials = await getAuthCookie();
   if (!credentials) {
-    throw new Error("No credentials found");
+    console.error("No credentials found");
+    redirect("/");
   }
 
-  const response = await fetch(`${credentials.url}/v0/datasources`, {
-    headers: {
-      Authorization: `Bearer ${credentials.token}`,
-    },
-  });
+  try {
+    const response = await fetch(`${credentials.url}/v0/datasources`, {
+      headers: {
+        Authorization: `Bearer ${credentials.token}`,
+      },
+    });
 
-  if (!response.ok) {
-    throw new Error(`Failed to fetch datasources: ${response.statusText}`);
-  }
+    if (!response.ok) {
+      throw new Error(`Failed to fetch datasources: ${response.statusText}`);
+    }
 
-  const data = await response.json();
-  if (data.datasources == null) {
-    console.error("Invalid response for datasources", data);
+    const data = await response.json();
+    if (data.datasources == null) {
+      console.error("Invalid response for datasources", data);
+      return [];
+    }
+
+    return data.datasources;
+  } catch (error) {
+    console.error(error);
     return [];
   }
-
-  return data.datasources;
 }
