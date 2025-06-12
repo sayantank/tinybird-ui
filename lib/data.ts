@@ -22,7 +22,7 @@ interface Statistics {
   row_count: number;
 }
 
-interface Datasource {
+export interface Datasource {
   id: string;
   name: string;
   cluster: string;

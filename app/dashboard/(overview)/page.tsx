@@ -1,12 +1,29 @@
 import { QueryBlock } from "@/components/query-block";
 import { Separator } from "@/components/ui/separator";
 import { TypographyH3, TypographySmall } from "@/components/ui/typography";
-import { getDatasources } from "@/lib/data";
+import { type Datasource, getDatasources } from "@/lib/data";
 
 export default async function DashboardPage() {
-  const datasources = await getDatasources();
+  let datasources: Datasource[] = [];
+  let errorMessage: string | null = null;
+
+  try {
+    datasources = await getDatasources();
+  } catch (e) {
+    console.error(e);
+    errorMessage = "Failed to fetch datasources";
+  }
+
   return (
     <div className="flex flex-col gap-8">
+      {errorMessage && (
+        <div
+          className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+          role="alert"
+        >
+          <span className="block sm:inline">{errorMessage}</span>
+        </div>
+      )}
       <div>
         <TypographyH3>Datasources</TypographyH3>
         <div className="w-full overflow-x-auto mt-4">
