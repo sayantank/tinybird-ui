@@ -54,7 +54,3 @@ This project is built with:
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-[MIT License](LICENSE)
